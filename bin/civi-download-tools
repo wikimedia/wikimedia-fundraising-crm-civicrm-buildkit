@@ -610,7 +610,7 @@ pushd $PRJDIR >> /dev/null
   else
     echo "[[Download composer]]"
     download_url "https://getcomposer.org/installer" "$TMPDIR/composer-installer"
-    php "$TMPDIR/composer-installer" -- --install-dir="$PRJDIR/bin"
+    php "$TMPDIR/composer-installer" -- --install-dir="$PRJDIR/bin  --1"
     mv "$PRJDIR/bin/composer.phar" "$PRJDIR/bin/composer"
   fi
 
