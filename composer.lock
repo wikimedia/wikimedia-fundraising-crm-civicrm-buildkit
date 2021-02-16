@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "80a9a8808d208849a98a706cf96eef38",
+    "content-hash": "279b54664eeb283d2e540044ff144eba",
     "packages": [
         {
             "name": "civicrm/composer-downloads-plugin",
@@ -156,7 +156,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/civicrm/coder.git",
-                "reference": "ef68b5617b94a1cef724b74c8b4318799388cc00"
+                "reference": "b04829b2095b6351531050f3ad25448fe63f1ce9"
             },
             "require": {
                 "ext-mbstring": "*",
@@ -188,7 +188,7 @@
                 "issues": "https://www.drupal.org/project/issues/coder",
                 "source": "https://www.drupal.org/project/coder"
             },
-            "time": "2020-08-17T23:23:52+00:00"
+            "time": "2020-11-14T00:08:25+00:00"
         },
         {
             "name": "mustache/mustache",
@@ -474,12 +474,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "cfd510c047359b6a48197f3bc08c9d260e68a108"
+                "reference": "84c0c150c1520995f09ea9e47e817068b353cb0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/cfd510c047359b6a48197f3bc08c9d260e68a108",
-                "reference": "cfd510c047359b6a48197f3bc08c9d260e68a108",
+                "url": "https://api.github.com/repos/symfony/config/zipball/84c0c150c1520995f09ea9e47e817068b353cb0f",
+                "reference": "84c0c150c1520995f09ea9e47e817068b353cb0f",
                 "shasum": ""
             },
             "require": {
@@ -711,7 +711,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
