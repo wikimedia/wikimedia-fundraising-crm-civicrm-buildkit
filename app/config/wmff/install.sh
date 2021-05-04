@@ -39,7 +39,6 @@ civicrm_install
 ##"${WEB_ROOT}/sites/default/civicrm/extensions/rpow/bin/harvey-dent" --root "${WEB_ROOT}/drupal"
 
 echo "CREATE DATABASE IF NOT EXISTS fredge"| amp sql -N civi -a
-echo "GRANT ALL ON fredge.* TO 'drupal'@'%'"| amp sql -N civi -a
 ###############################################################################
 ## Extra configuration
 pushd "$CMS_ROOT"
