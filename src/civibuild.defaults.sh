@@ -107,6 +107,14 @@ CMS_TITLE=
 ## The Drupal/WordPress/Joomla version (default: discretionary)
 CMS_VERSION=
 
+## Store credentials in encrypted format
+## (default: randomly generated)
+CIVI_CRED_KEY=
+
+## Digital signatures
+## (default: randomly generated)
+CIVI_SIGN_KEY=
+
 ## The CiviCRM API (default: randomly generated)
 CIVI_SITE_KEY=
 
@@ -198,6 +206,9 @@ CIVI_EXT_DIR=
 
 ## URL of the web-managed extension folder (required iff CIVI_EXT_DIR is set)
 CIVI_EXT_URL=
+
+## List of extensions to enable on `*-demo` builds
+CIVI_DEMO_EXTS='civirules civisualize cividiscount org.civicrm.search_kit org.civicrm.search org.civicrm.contactlayout org.civicrm.angularprofiles org.civicrm.volunteer'
 
 ## DB credentials for Civi test DB
 ## (suggested: autogenerate via 'amp create -f --root="$WEB_ROOT" --name=civi --prefix=TEST_ --skip-url')
@@ -295,7 +306,7 @@ PERSISTENT_VARS="
   CIVI_SETTINGS CIVI_FILES CIVI_TEMPLATEC CIVI_UF
   IS_INSTALLED
   EXT_DLS
-  SITE_TOKEN SITE_TYPE
+  CIVI_CRED_KEY CIVI_SIGN_KEY SITE_TOKEN SITE_TYPE
 "
 # ignore: runtime options like CIVI_SQL_SKIP and FORCE_DOWNLOAD
 

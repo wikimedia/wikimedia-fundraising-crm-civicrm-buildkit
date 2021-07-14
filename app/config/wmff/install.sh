@@ -39,7 +39,7 @@ CIVI_EXT_URL="${CMS_URL}/sites/default/civicrm/extensions"
 civicrm_install
 
 ## Comment out for now
-##"${WEB_ROOT}/sites/default/civicrm/extensions/rpow/bin/harvey-dent" --root "${WEB_ROOT}/drupal"
+"${WEB_ROOT}/drupal/sites/default/civicrm/extensions/rpow/bin/harvey-dent" --root "${WEB_ROOT}/drupal"
 echo "DROP DATABASE IF EXISTS fredge"| amp sql -N civi -a
 echo "CREATE DATABASE IF NOT EXISTS fredge"| amp sql -N civi -a
 eval mysql $CIVI_DB_ARGS <<EOSQL
@@ -49,9 +49,12 @@ EOSQL
 ###############################################################################
 ## Extra configuration
 pushd "$CMS_ROOT"
-drush -y en `cat sites/default/enabled_modules`
+drush -y en civicrm
+cv en --ignore-missing search_kit wmf-civicrm
 
-drush -y updatedb
+drush -y en --debug `cat sites/default/enabled_modules`
+
+drush -y -v --debug updatedb
 
 ## Setup theme
 drush -y en tivy
@@ -73,16 +76,17 @@ drush -y civicrm-sync-users-contacts
 [ ! -z "$FR_DOCKER_CIVI_API_KEY" ] && cv api4 Contact.update \
 	'{"where":[["display_name","=","admin@example.com"]],"values":{"api_key":"'$FR_DOCKER_CIVI_API_KEY'"}}'
 
-DEV_SETTINGS_FILE="${WEB_ROOT}/sites/default/wmf_settings_developer.json"
+DEV_SETTINGS_FILE="${WEB_ROOT}/drupal/sites/default/wmf_settings_developer.json"
 if [ -e "$DEV_SETTINGS_FILE" ]; then
   drush --in=json cvapi Setting.create < "$DEV_SETTINGS_FILE"
 fi
 
-WMF_SETTINGS_FILE="${WEB_ROOT}/sites/default/wmf_settings.json"
+WMF_SETTINGS_FILE="${WEB_ROOT}/drupal/sites/default/wmf_settings.json"
 if [ -e "$WMF_SETTINGS_FILE" ]; then
   drush --in=json cvapi Setting.create < "$WMF_SETTINGS_FILE"
 fi
 
+drush cvapi Contact.create Contact.create first_name='Anonymous' last_name=Anonymous email=fakeemail@wikimedia.org contact_type=Individual
 #drush -y user-add-role civicrm_webtest_user "$DEMO_USER"
 # In Garland, CiviCRM's toolbar looks messy unless you also activate Drupal's "toolbar", so grant "access toolbar"
 # We've activated more components than typical web-test baseline, so grant rights to those components.

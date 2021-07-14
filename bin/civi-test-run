@@ -3,7 +3,9 @@ set -e
 
 function getPhpunitVer() {
   CIVIVER=$(getCiviVer)
-  if [ $(php -r "echo version_compare('$CIVIVER', '5.28', '>=');") ]; then
+  if [ $(php -r "echo version_compare('$CIVIVER', '5.39', '>=');") ]; then
+    echo "phpunit8 --printer \Civi\Test\TAP"
+  elif [ $(php -r "echo version_compare('$CIVIVER', '5.28', '>=');") ]; then
     echo "phpunit7 --printer \Civi\Test\TAP"
   elif [ $(php -r "echo version_compare('$CIVIVER', '5.22', '>=');") ]; then
     echo "phpunit6 --printer \Civi\Test\TAP"
@@ -84,6 +86,7 @@ function task_phpunit() {
   $GUARD phpunit-xml-cleanup "$JUNITDIR"/*.xml
 }
 
+## usage: task_phpunit_core_extension <extension-dir> <junit-file> [<phpunit-group>]
 function task_phpunit_core_extension() {
 
  EXTENSION="$1"
@@ -99,7 +102,7 @@ function task_phpunit_core_extension() {
  fi
 
  pushd "$CIVI_CORE/ext/$EXTENSION"
- if ! $GUARD phpunit6 --printer='Civi\Test\TAP' --log-junit="$JUNITDIR/$FILENAME" $GROUP; then
+ if ! $GUARD $(getPhpunitVer) --printer='Civi\Test\TAP' --log-junit="$JUNITDIR/$FILENAME" $GROUP; then
    EXITCODES="$EXITCODES $EXTENSION"
  fi
  echo "Found EXITCODES=\"$EXITCODES\""
@@ -125,6 +128,7 @@ function test_afform_extensions() {
   task_phpunit_core_extension "$(basename $DIR)/core" "afform-core"
   $GUARD civibuild restore "$BLDNAME"
   cv en afform
+  cv en --ignore-missing authx
   task_phpunit_core_extension "$(basename $DIR)/mock" "afform-mock-e2e" e2e
   task_phpunit_core_extension "$(basename $DIR)/mock" "afform-mock-headless" headless
   $GUARD civibuild restore "$BLDNAME"
@@ -133,8 +137,8 @@ function test_afform_extensions() {
 function task_karma() {
   $GUARD pushd "$CIVI_CORE"
     ## Work-around: ensure pradmin user has sa contact
-    ADMIN_USER=$(cv ev 'echo $GLOBALS['_CV']['ADMIN_USER'];')
-    drush -u "$ADMIN_USER" cvapi contact.get id=user_contact_id
+    ADMIN_USER=$(cv ev 'echo $GLOBALS["_CV"]["ADMIN_USER"];')
+    cv api -U "$ADMIN_USER" contact.get id=user_contact_id
     if [ -f karma.conf.js ]; then
       if ! $GUARD karma start --browsers PhantomJS --single-run --reporters dots,junit ; then
         EXITCODES="$EXITCODES karma"
@@ -329,6 +333,7 @@ for TESTTYPE in $SUITES ; do
     phpunit-financialacls) task_phpunit_core_extension financialacls ;;
     phpunit-eway) task_phpunit_core_extension ewaysingle ;;
     phpunit-afform) test_afform_extensions "$CIVI_CORE/ext/afform" ;;
+    phpunit-authx) task_phpunit_core_extension authx ;;
     phpunit-core-exts) test_core_extenions ;;
     *) echo "unrecognized suite: $TESTTYPE"; exit 2 ;;
   esac

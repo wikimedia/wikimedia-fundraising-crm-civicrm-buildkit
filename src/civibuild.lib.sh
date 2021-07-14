@@ -223,7 +223,7 @@ function cvutil_inject_settings() {
   local FILE="$1"
   local NAME="$2"
   local PREAMBLE="$3"
-  cvutil_assertvars cvutil_inject_settings PRJDIR SITE_NAME SITE_TYPE SITE_CONFIG_DIR SITE_ID SITE_TOKEN PRIVATE_ROOT FILE NAME
+  cvutil_assertvars cvutil_inject_settings PRJDIR CIVI_CRED_KEY CIVI_SIGN_KEY SITE_NAME SITE_TYPE SITE_CONFIG_DIR SITE_ID SITE_TOKEN PRIVATE_ROOT FILE NAME
   # Note: CMS_VERSION ought to be defined for use in $civibuild['CMS_VERSION'], but it hasn't always been, and for most build-types its absence would be non-fatal.
 
   ## Prepare temp file
@@ -565,11 +565,12 @@ function api4_download_conditional() {
 ##
 ## Be sure to "cd" into the root of the composer project, then call `civicrm_download_composer_d8`
 function civicrm_download_composer_d8() {
-  cvutil_assertvars civicrm_download_composer_d8 CIVI_VERSION
+  cvutil_assertvars civicrm_download_composer_d8 CIVI_VERSION CMS_VERSION
 
   composer config 'extra.enable-patching' true
   ## Ensure that we compile all our js as necessary
   composer config extra.compile-mode all
+  composer config minimum-stability dev
 
   local CIVI_VERSION_COMP=$(civicrm_composer_ver "$CIVI_VERSION")
   local EXTRA_COMPOSER=()
@@ -588,7 +589,14 @@ function civicrm_download_composer_d8() {
     5.30*) EXTRA_COMPOSER+=( 'civicrm/civicrm-asset-plugin:~1.1' ) ; ;;
     *) echo "No extra patches required" ; ;;
   esac
-  EXTRA_COMPOSER+=( 'pear/pear_exception:1.0.1 as 1.0.0') ## weird conflict in drupal-composer/drupal-project
+
+  case "$CMS_VERSION" in 
+    9.2*) echo 'No Extra Patch required' ; ;;
+    9.1*) echo 'No Extra Patch required' ; ;;
+    9*) echo 'No Extra Patch required' ; ;;
+    8.9*) echo 'No Extra Patch required' ; ;;
+    *) EXTRA_COMPOSER+=( 'pear/pear_exception:1.0.1 as 1.0.0') ## weird conflict in drupal-composer/drupal-project
+  esac 
 
   composer require "${EXTRA_COMPOSER[@]}" civicrm/civicrm-{core,packages,drupal-8}:"$CIVI_VERSION_COMP" --prefer-source
   [ -n "$EXTRA_PATCH" ] && git scan am -N "${EXTRA_PATCH[@]}"
@@ -760,6 +768,8 @@ function civicrm_make_settings_php() {
     | sed "s;%%testPass%%;${TEST_DB_PASS};" \
     | sed "s;%%testUser%%;${TEST_DB_USER};" \
     | sed "s;%%siteKey%%;${CIVI_SITE_KEY};" \
+    | sed "s;%%credKeys%%;aes-cbc::${CIVI_CRED_KEY};" \
+    | sed "s;%%signKeys%%;jwt-hs256::${CIVI_SIGN_KEY};" \
     | sed "s;%%templateCompileDir%%;${CIVI_TEMPLATEC};" \
     > "$CIVI_SETTINGS"
   echo >> "$CIVI_SETTINGS"

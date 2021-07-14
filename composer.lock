@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3ebcc3bfd2b4c6d13f7efab997bc0ec1",
+    "content-hash": "bb6eba908a2298ce8800dfff419f7fc7",
     "packages": [
         {
             "name": "civicrm/composer-downloads-plugin",
@@ -63,14 +63,15 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/civicrm/civicrm-upgrade-test.git",
-                "reference": "03e554787f378900f870a030cf2575d3cd49900f"
+                "reference": "318cb5d9cecd75b83bbceb999735fd62dfe2ae7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/civicrm/civicrm-upgrade-test/zipball/03e554787f378900f870a030cf2575d3cd49900f",
-                "reference": "03e554787f378900f870a030cf2575d3cd49900f",
+                "url": "https://api.github.com/repos/civicrm/civicrm-upgrade-test/zipball/318cb5d9cecd75b83bbceb999735fd62dfe2ae7a",
+                "reference": "318cb5d9cecd75b83bbceb999735fd62dfe2ae7a",
                 "shasum": ""
             },
+            "default-branch": true,
             "bin": [
                 "civicrm-upgrade-test"
             ],
@@ -87,7 +88,10 @@
             ],
             "description": "Collection of scripts and data-files for testing CiviCRM upgrades",
             "homepage": "https://github.com/civicrm/civicrm-upgrade-test",
-            "time": "2020-07-17T23:40:27+00:00"
+            "support": {
+                "source": "https://github.com/civicrm/civicrm-upgrade-test/tree/master"
+            },
+            "time": "2021-06-03T02:50:54+00:00"
         },
         {
             "name": "drupal/coder",
@@ -176,16 +180,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.4.2",
+            "version": "3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "b8a7362af1cc1aadb5bd36c3defc4dda2cf5f0a8"
+                "reference": "ffced0d2c8fa8e6cdc4d695a743271fab6c38625"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/b8a7362af1cc1aadb5bd36c3defc4dda2cf5f0a8",
-                "reference": "b8a7362af1cc1aadb5bd36c3defc4dda2cf5f0a8",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/ffced0d2c8fa8e6cdc4d695a743271fab6c38625",
+                "reference": "ffced0d2c8fa8e6cdc4d695a743271fab6c38625",
                 "shasum": ""
             },
             "require": {
@@ -223,7 +227,12 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-04-10T23:49:02+00:00"
+            "support": {
+                "issues": "https://github.com/squizlabs/PHP_CodeSniffer/issues",
+                "source": "https://github.com/squizlabs/PHP_CodeSniffer",
+                "wiki": "https://github.com/squizlabs/PHP_CodeSniffer/wiki"
+            },
+            "time": "2021-04-09T00:54:41+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -270,7 +279,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -434,7 +443,7 @@
     },
     "platform-dev": [],
     "platform-overrides": {
-        "php": "5.6"
+        "php": "7.1"
     },
     "plugin-api-version": "2.0.0"
 }

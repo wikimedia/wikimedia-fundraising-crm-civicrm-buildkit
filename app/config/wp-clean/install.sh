@@ -46,24 +46,12 @@ pushd "$CMS_ROOT" >> /dev/null
 ## Clear out default content. Load real content.
 TZ=$(php --info |grep 'Default timezone' |sed s/' => '/:/ |cut -d':' -f2)
 wp option set timezone_string $TZ
-wp post delete 1
-wp post delete 2
 wp rewrite structure '/%postname%/'
 wp rewrite flush --hard
-wp plugin install wordpress-importer --activate
-wp import "$SITE_CONFIG_DIR/civicrm-wordpress.xml" --authors=create
-wp search-replace 'http://civicrm-wordpress.ex' "$SITE_URL"
-wp theme install twentythirteen --activate
-wp eval '$home = get_page_by_title("Welcome to CiviCRM with WordPress"); update_option("page_on_front", $home->ID); update_option("show_on_front", "page");'
 
 wp plugin activate civicrm
 wp eval '$c=[civi_wp(), "add_wpload_setting"]; if (is_callable($c)) $c();' ## Temporary workaround, init wpLoadPh
-wp plugin activate civicrm-demo-wp
-wp plugin install civicrm-admin-utilities
-wp plugin install gutenberg
-wp plugin install classic-editor --activate
 
-civicrm_apply_demo_defaults
 cv ev 'if(is_callable(array("CRM_Core_BAO_CMSUser","synchronize"))){CRM_Core_BAO_CMSUser::synchronize(FALSE);}else{CRM_Utils_System::synchronizeUsers();}'
 
 wp role create civicrm_admin 'CiviCRM Administrator'
@@ -155,21 +143,6 @@ wp user create "$DEMO_USER" "$DEMO_EMAIL" --role=civicrm_admin --user_pass="$DEM
 wp eval '$c=[civi_wp()->users->set_wp_user_capabilities()];if (is_callable($c)) $c();'
 ## Force basepage
 wp eval '$c=[civi_wp()->basepage->create_wp_basepage()];if (is_callable($c)) $c();'
-
-## Setup demo extensions
-cv en --ignore-missing $CIVI_DEMO_EXTS
-if [[ "$CIVI_DEMO_EXTS" =~ volunteer ]]; then
-  wp cap add civicrm_admin \
-    register to volunteer \
-    log own hours \
-    create volunteer projects \
-    edit own volunteer projects \
-    delete own volunteer projects
-fi
-
-## Demo sites always disable email and often disable cron
-wp civicrm api StatusPreference.create ignore_severity=critical name=checkOutboundMail
-wp civicrm api StatusPreference.create ignore_severity=critical name=checkLastCron
 
 # Disable WP fatal error handler as it gets in the way of debugging.
 wp config set WP_DISABLE_FATAL_ERROR_HANDLER true --raw
