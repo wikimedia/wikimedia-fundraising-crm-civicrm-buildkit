@@ -720,9 +720,6 @@ pushd $PRJDIR >> /dev/null
   ## Download joomlatools-console
   install_joomlatools_console "$JOOMLATOOLS_CONSOLE_VERSION"
 
-  ## Download joomlatools-console
-  install_joomlatools_console "$JOOMLATOOLS_CONSOLE_VERSION"
-
   ## Download "hub"
   touch "$PRJDIR/extern/hub.txt"
   if [ -z "$IS_FORCE" -a -e "$PRJDIR/extern/hub/bin/hub" -a -e "$PRJDIR/bin/hub" -a "$(cat $PRJDIR/extern/hub.txt)" == "$HUB_VERSION" ]; then
